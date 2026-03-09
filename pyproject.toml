@@ -1,0 +1,17 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "log-analyzer"
+version = "0.1.0"
+description = "CLI tool for parsing application logs and producing summaries."
+readme = "README.md"
+requires-python = ">=3.11"
+authors = [{ name = "Noopur" }]
+
+[project.scripts]
+log-analyzer = "analyzer.cli:main"
+
+[tool.setuptools.packages.find]
+include = ["analyzer*"]
