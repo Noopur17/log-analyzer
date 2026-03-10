@@ -34,6 +34,49 @@ python3 -m pip install .
 log-analyzer --log logs/sample.log --format json --output report.json
 ```
 
+### Run with Docker
+
+Build the image:
+
+```bash
+docker build -t log-analyzer:latest -f dockerfile .
+```
+
+Run the web UI container:
+
+```bash
+docker run --rm -p 8000:8000 log-analyzer:latest
+```
+
+Then open [http://localhost:8000](http://localhost:8000).
+
+Run the CLI inside the image:
+
+```bash
+docker run --rm -v "$PWD/logs:/app/logs" log-analyzer:latest log-analyzer --log /app/logs/sample.log
+```
+
+### GitHub Actions Docker publish
+
+This repo now includes a GitHub Actions workflow at `.github/workflows/docker-publish.yml`.
+
+It does two things:
+
+- runs the Python test suite on every push and pull request
+- builds and pushes Docker images to `noopur17/log-analyzer` on pushes to `main` and tags like `v0.1.0`
+
+Set these GitHub repository secrets before using it:
+
+- `DOCKERHUB_USERNAME`
+- `DOCKERHUB_TOKEN`
+
+Recommended tag flow:
+
+```bash
+git tag v0.1.0
+git push origin main --tags
+```
+
 ## Usage
 
 ```bash

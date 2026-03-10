@@ -2,11 +2,9 @@ FROM python:3.11-slim
 
 WORKDIR /app
 
-# Install the project so the packaged CLI is available
-COPY pyproject.toml README.md ./
-COPY analyzer ./analyzer
+COPY . .
 RUN pip install --no-cache-dir .
 
-COPY . .
+EXPOSE 8000
 
-ENTRYPOINT ["log-analyzer"]
+CMD ["log-analyzer-web"]

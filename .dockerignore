@@ -1,0 +1,12 @@
+.git
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.coverage
+dist/
+build/
+*.egg-info/
+report.json
+report.csv
+tests/__pycache__/
+analyzer/__pycache__/
