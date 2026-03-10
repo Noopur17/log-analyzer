@@ -1,5 +1,33 @@
 {
-    "INFO": 1,
-    "ERROR": 1,
-    "WARNING": 1
+    "files_scanned": 1,
+    "total_lines": 5,
+    "parsed_lines": 4,
+    "skipped_lines": 1,
+    "matching_entries": 4,
+    "counts_by_level": {
+        "ERROR": 2,
+        "INFO": 1,
+        "WARNING": 1
+    },
+    "first_timestamp": "2026-03-08 12:00:00",
+    "last_timestamp": "2026-03-08 12:03:00",
+    "top_messages": [
+        {
+            "message": "Database timeout",
+            "count": 2
+        },
+        {
+            "message": "Application started",
+            "count": 1
+        },
+        {
+            "message": "Disk usage high",
+            "count": 1
+        }
+    ],
+    "levels_present": [
+        "ERROR",
+        "INFO",
+        "WARNING"
+    ]
 }

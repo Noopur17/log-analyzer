@@ -9,6 +9,7 @@
 - Filter by level, time range, or message text
 - Print a terminal summary or write JSON/CSV reports
 - Track skipped malformed lines so bad input is visible
+- Includes a browser UI for pasted logs and file uploads backed by the Python analyzer
 
 ## Quick Start
 
@@ -17,6 +18,14 @@
 ```bash
 python3 -m analyzer.cli --log logs/sample.log
 ```
+
+### Run the browser UI
+
+```bash
+./scripts/run_ui.sh
+```
+
+Then open [http://localhost:8000](http://localhost:8000).
 
 ### Install as a CLI
 
@@ -49,6 +58,22 @@ python3 -m analyzer.cli --log logs/sample.log
 python3 -m analyzer.cli --log logs/sample.log --format json --output report.json
 cat report.json
 ```
+
+Validate the UI locally:
+
+```bash
+./scripts/run_ui.sh
+```
+
+Open [http://localhost:8000](http://localhost:8000), click `Load sample`, then verify the summary shows:
+
+- `Files: 1`
+- `Lines: 5`
+- `Parsed: 4`
+- `Skipped: 1`
+- `Matches: 4`
+
+The UI sends pasted or uploaded log text to the local Python backend at `/api/analyze`, so the UI and CLI use the same parsing and filtering logic.
 
 ## Example Output
 

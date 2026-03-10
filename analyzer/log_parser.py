@@ -32,6 +32,25 @@ def parse_timestamp(raw_value: str) -> datetime:
     return datetime.strptime(raw_value, TIMESTAMP_FORMAT)
 
 
+def parse_log_line(raw_line: str, source: Path | str, line_number: int) -> LogEntry | None:
+    match = LOG_PATTERN.match(raw_line)
+    if not match:
+        return None
+
+    try:
+        timestamp = parse_timestamp(match.group("timestamp"))
+    except ValueError:
+        return None
+
+    return LogEntry(
+        timestamp=timestamp,
+        level=match.group("level").upper(),
+        message=match.group("message"),
+        source=str(source),
+        line_number=line_number,
+    )
+
+
 def resolve_log_paths(paths: list[str], recursive: bool = False) -> list[Path]:
     resolved_paths: list[Path] = []
     for raw_path in paths:
@@ -67,7 +86,7 @@ class LogParser:
             with path.open("r", encoding="utf-8") as log_file:
                 for line_number, raw_line in enumerate(log_file, start=1):
                     total_lines += 1
-                    entry = self._parse_line(raw_line.rstrip("\n"), path, line_number)
+                    entry = parse_log_line(raw_line.rstrip("\n"), path, line_number)
                     if entry is None:
                         skipped_lines += 1
                         continue
@@ -79,22 +98,4 @@ class LogParser:
             total_lines=total_lines,
             parsed_lines=len(entries),
             skipped_lines=skipped_lines,
-        )
-
-    def _parse_line(self, raw_line: str, path: Path, line_number: int) -> LogEntry | None:
-        match = LOG_PATTERN.match(raw_line)
-        if not match:
-            return None
-
-        try:
-            timestamp = parse_timestamp(match.group("timestamp"))
-        except ValueError:
-            return None
-
-        return LogEntry(
-            timestamp=timestamp,
-            level=match.group("level").upper(),
-            message=match.group("message"),
-            source=str(path),
-            line_number=line_number,
         )

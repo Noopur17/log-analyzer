@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Log Analyzer UI</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=IBM+Plex+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <div class="page-shell">
+      <header class="hero">
+        <div class="hero-copy">
+          <p class="eyebrow">Browser UI</p>
+          <h1>Analyze logs from a paste or file drop.</h1>
+          <p class="hero-text">
+            This UI runs entirely in your browser. Paste error output, upload a
+            log file, filter the results, and export the summary as JSON.
+          </p>
+        </div>
+        <div class="hero-panel">
+          <div class="mini-stat">
+            <span>Input modes</span>
+            <strong>Paste + Upload</strong>
+          </div>
+          <div class="mini-stat">
+            <span>Formats</span>
+            <strong>Table + JSON</strong>
+          </div>
+        </div>
+      </header>
+
+      <main class="layout">
+        <section class="panel input-panel">
+          <div class="panel-heading">
+            <h2>Input</h2>
+            <button id="load-sample" class="ghost-button">Load sample</button>
+          </div>
+
+          <label class="field-label" for="log-input">Paste log text</label>
+          <textarea
+            id="log-input"
+            rows="14"
+            placeholder="[2026-03-08 12:01:00] ERROR: Database timeout"
+          ></textarea>
+
+          <div id="drop-zone" class="drop-zone" tabindex="0">
+            <input id="file-input" type="file" accept=".log,.txt" hidden />
+            <p>Drop a log file here or <button id="browse-file" class="link-button" type="button">browse</button></p>
+            <span id="file-name">No file selected</span>
+          </div>
+
+          <div class="control-grid">
+            <div>
+              <label class="field-label" for="level-filter">Level</label>
+              <select id="level-filter">
+                <option value="">All levels</option>
+                <option value="ERROR">ERROR</option>
+                <option value="WARNING">WARNING</option>
+                <option value="INFO">INFO</option>
+                <option value="DEBUG">DEBUG</option>
+              </select>
+            </div>
+            <div>
+              <label class="field-label" for="contains-filter">Contains</label>
+              <input id="contains-filter" type="text" placeholder="timeout" />
+            </div>
+            <div>
+              <label class="field-label" for="since-filter">Since</label>
+              <input id="since-filter" type="text" placeholder="2026-03-08 12:00:00" />
+            </div>
+            <div>
+              <label class="field-label" for="until-filter">Until</label>
+              <input id="until-filter" type="text" placeholder="2026-03-08 12:05:00" />
+            </div>
+          </div>
+
+          <div class="button-row">
+            <button id="analyze-button" class="primary-button">Analyze</button>
+            <button id="clear-button" class="secondary-button">Clear</button>
+            <button id="copy-json-button" class="secondary-button">Copy JSON</button>
+          </div>
+
+          <p id="status-message" class="status-message">Ready.</p>
+        </section>
+
+        <section class="panel results-panel">
+          <div class="panel-heading">
+            <h2>Summary</h2>
+            <span class="badge">Client-side</span>
+          </div>
+
+          <div id="summary-cards" class="summary-cards"></div>
+
+          <div class="results-grid">
+            <section class="sub-panel">
+              <h3>Counts by level</h3>
+              <div id="level-breakdown" class="level-breakdown"></div>
+            </section>
+            <section class="sub-panel">
+              <h3>Top messages</h3>
+              <div id="top-messages" class="list-block"></div>
+            </section>
+          </div>
+
+          <section class="sub-panel">
+            <h3>Matching entries</h3>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Timestamp</th>
+                    <th>Level</th>
+                    <th>Message</th>
+                  </tr>
+                </thead>
+                <tbody id="entries-table"></tbody>
+              </table>
+            </div>
+          </section>
+
+          <section class="sub-panel">
+            <h3>JSON preview</h3>
+            <pre id="json-preview" class="json-preview">{}</pre>
+          </section>
+        </section>
+      </main>
+    </div>
+
+    <script src="./app.js"></script>
+  </body>
+</html>

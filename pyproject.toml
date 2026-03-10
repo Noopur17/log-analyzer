@@ -12,6 +12,7 @@ authors = [{ name = "Noopur" }]
 
 [project.scripts]
 log-analyzer = "analyzer.cli:main"
+log-analyzer-web = "analyzer.webapp:main"
 
 [tool.setuptools.packages.find]
 include = ["analyzer*"]
